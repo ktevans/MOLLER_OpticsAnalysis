@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gdml
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://service-spi.web.cern.ch/service-spi/app/releases/GDML/schema/gdml.xsd">
+
+
+<define>
+  <!-- Full sieve system dimensions -->
+  <quantity name="sieve_system_inner_radius" type="length" value="1.390" unit="in"/>
+  <quantity name="sieve_system_outer_radius" type="length" value="3.858" unit="in"/>
+  <quantity name="sieve_system_thickness" type="length" value="90" unit="mm"/>
+
+  <!-- Sieve sector dimensions -->
+  <quantity name="sieve_sector_inner_radius" type="length" value="1.390" unit="in"/>
+  <quantity name="sieve_sector_outer_radius" type="length" value="3.858" unit="in"/>
+  <!-- Radiation length in W is 0.3504 cm [1], so 40 X_0 is about 15 cm.
+          [1] http://pdg.lbl.gov/2019/AtomicNuclearProperties/HTML/tungsten_W.html
+   -->
+  <quantity name="sieve_sector_thickness" type="length" value="90" unit="mm"/>
+  <quantity name="sieve_sector_angle" type="angle" value="25.7" unit="deg"/>
+
+  <variable name="i" value="1"/>
+</define>
+
+<materials>
+</materials>
+
+
+<solids>
+  <!-- Sieve system solid -->
+<polycone name="sieve_system_solid" startphi="0" deltaphi="360.0" aunit="deg">
+  <zplane rmin="29.59" rmax="97.9932" z="60"/>
+  <zplane rmin="35" rmax="97.9932" z="150"/>
+</polycone>
+
+  <!-- Sieve sector solid -->
+  <polycone name="sieve_sector_solid" startphi="-sieve_sector_angle/2" deltaphi="sieve_sector_angle">
+    <zplane rmin="29.59" rmax="97.9932" z="60"/>
+    <zplane rmin="35" rmax="97.9932" z="150"/>
+  </polycone>
+
+</solids>
+
+<structure>
+
+  <!-- Place the holes inside the sector volume -->
+  <volume name="sieve_sector_logic">
+    <materialref ref="G4_W"/>
+    <solidref ref="sieve_sector_solid"/>
+  </volume>
+
+  <!-- Place the sector volumes around the ring -->
+  <volume name="sieve_system_logic">
+    <materialref ref="G4_W"/>
+    <solidref ref="sieve_system_solid"/>
+    <auxiliary auxtype="Alpha" auxvalue="0.1"/>
+    <auxiliary auxtype="SensDet" auxvalue="sieveDet"/>
+    <auxiliary auxtype="DetType" auxvalue="secondaries"/>
+    <auxiliary auxtype="DetType" auxvalue="boundaryhits"/>
+    <auxiliary auxtype="DetType" auxvalue="lowenergyneutral"/>
+    <auxiliary auxtype="DetNo" auxvalue="1000"/>
+    <loop for="i" from="1" to="7" step="1">
+      <physvol name="sieve_sector_physical[i]">
+        <volumeref ref="sieve_sector_logic"/>
+        <rotation unit="deg"
+          z="360.0/14.0+360.0/7.0*(i-1)"
+          />
+      </physvol>
+    </loop>
+  </volume>
+</structure>
+
+<setup name="sieve_system_world" version="1.0">
+  <world ref="sieve_system_logic"/>
+</setup>
+
+</gdml>
+

@@ -14,17 +14,21 @@
 /control/execute macros/load_magnetic_fieldmaps.mac
 
 # Raster and initial angle stuff
-/remoll/rasx 0 mm
-/remoll/rasy 0 mm
+/remoll/rasx 5 mm
+/remoll/rasy 5 mm
 
 /remoll/evgen/set elasticC12
 #/remoll/evgen/set quasielasticC12
 #/remoll/evgen/set inelasticC12
 
+# Implement sieve/blocker and enable virtual detectors
+/remoll/SD/enable_range 1000 1010
+/remoll/SD/enable_range 2000 2010
+/control/execute macros/sieve/sieve_in.mac
+
 /remoll/beamcurr 85 microampere
 
-/remoll/seed 123456
 
 /remoll/target/print
-/run/beamOn 1000
+/run/beamOn 100000
 

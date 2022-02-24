@@ -6,6 +6,8 @@
 
 # This is the current working geometry
 /remoll/setgeofile geometry/mollerMother.gdml
+#/remoll/geometry/setfile geometry/mollerMother.gdml
+/remoll/parallel/setfile geometry/mollerParallel.gdml
 
 #/remoll/likekryptonite  true
 
@@ -18,9 +20,13 @@
 
 /control/execute macros/target/Optics1.mac
 
-#/remoll/beamene 11.0 GeV
-/remoll/beamene 855 MeV
-/remoll/beamcurr 50 microampere
+/control/execute macros/sieve/sieve_in.mac
+
+#/control/execute macros/load_magnetic_fieldmaps.mac
+
+/remoll/beamene 11.0 GeV
+#/remoll/beamene 855 MeV
+/remoll/beamcurr 85 microampere
 #/remoll/optical true
 #/remoll/addfield CLEO_rm.dat
 /control/execute vis/vis.mac

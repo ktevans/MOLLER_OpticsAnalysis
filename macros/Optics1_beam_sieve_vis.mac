@@ -5,7 +5,8 @@
 /remoll/physlist/optical/enable
 
 # This is the current working geometry
-/remoll/setgeofile geometry/mollerMother.gdml
+/remoll/setgeofile geometry_blocker/blocker_geometry1mm/mollerMother.gdml
+/remoll/parallel/setfile geometry_blocker/blocker_geometry1mm/mollerParallel.gdml 
 
 #/remoll/likekryptonite  true
 
@@ -16,11 +17,13 @@
 
 /run/initialize
 
+#Implement Optics1 C12 Target
 /control/execute macros/target/Optics1.mac
 
-#/remoll/beamene 11.0 GeV
-/remoll/beamene 855 MeV
-/remoll/beamcurr 50 microampere
+#Define Beam Settings
+/remoll/beamene 11.0 GeV
+#/remoll/beamene 855 MeV
+/remoll/beamcurr 85 microampere
 #/remoll/optical true
 #/remoll/addfield CLEO_rm.dat
 /control/execute vis/vis.mac
@@ -34,11 +37,11 @@
 ## Beam generator
 /remoll/evgen/set beam
 #/remoll/evgen/beam/origin -987.5,0.0,-150.0 mm
-/remoll/evgen/beam/origin -987.5 0.0 -150.0 mm
+/remoll/evgen/beam/origin 0.0 0.0 -7500.0 mm
 #/remoll/evgen/beam/x -987.5 mm
-/remoll/evgen/beam/direction -0.0523 0.0 0.9986
-/remoll/evgen/beam/rasx 105.0 mm
-/remoll/evgen/beam/rasy 78.0 mm
+#/remoll/evgen/beam/direction -0.0523 0.0 0.9986
+/remoll/evgen/beam/rasx 5.0 mm
+/remoll/evgen/beam/rasy 5.0 mm
 #/remoll/evgen/beam/x -987.5 mm
 #/remoll/evgen/beam/z -150.0 mm
 #/remoll/evgen/beam/px -0.0523
@@ -53,3 +56,8 @@
 #/remoll/evgen/external/startEvent 0
 #/remoll/evgen/external/zOffset -28550.0
 #/remoll/filename remollout_r5o_external_default.root
+
+#Implement Sieve
+/control/execute macros/sieve/sieve_in.mac
+/remoll/SD/enable_range 1000 1010
+/remoll/SD/enable_range 2000 2010

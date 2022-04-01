@@ -6,14 +6,14 @@
 /run/initialize
 
 # Set target ladder position
-/control/execute opticsAnalysis/macros/target/Optics1US.mac
+/control/execute opticsAnalysis/macros/target/Optics2US.mac
 
 # Load magnetic fields
 /control/execute macros/load_magnetic_fieldmaps.mac
 
 # Raster and initial angle stuff
-/remoll/rasx 5 mm
-/remoll/rasy 5 mm
+#/remoll/rasx 5 mm
+#/remoll/rasy 5 mm
 
 /remoll/evgen/set elasticC12
 #/remoll/evgen/set quasielasticC12
@@ -22,9 +22,9 @@
 # Implement sieve
 /control/execute macros/sieve/sieve_in.mac
 
-/remoll/beamcurr 65 microampere
-/remoll/beamene 11 GeV
+/remoll/beamcurr 1 microampere
+/remoll/beamene 2.2 GeV
 
 /remoll/target/print
-/run/beamOn 50
+/run/beamOn 250000
 

@@ -51,7 +51,7 @@
 
   <!-- Place the sector volumes around the ring -->
   <volume name="sieve_system_logic">
-    <materialref ref="G4_W"/> <!-- Make whole system tungsten -->
+    <materialref ref="G4_W"/> <!-- Make whole system pure tungsten -->
     <solidref ref="sieve_system_solid"/>
     <auxiliary auxtype="Alpha" auxvalue="0.1"/>
     <auxiliary auxtype="SensDet" auxvalue="sieveDet"/>

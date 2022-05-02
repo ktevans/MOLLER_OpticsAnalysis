@@ -183,15 +183,13 @@
   <volume name="TargetPositionOptics1_logical">
     <materialref ref="G4_Galactic"/>
     <solidref ref="TargetPosition_solid"/>
-<!--
     <physvol>
       <volumeref ref="TargetCFoilUS_logical"/>
-      <position z="-60*cm"/>
+      <position z="-30*cm"/>
     </physvol>
--->
     <physvol>
       <volumeref ref="TargetCFoilDS_logical"/>
-      <position z="+62.5*cm"/>
+      <position z="+60*cm"/>
     </physvol>
     <auxiliary auxtype="TargetSystem" auxvalue="Optics1"/>
   </volume>

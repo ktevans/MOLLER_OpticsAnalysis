@@ -1,0 +1,70 @@
+/remoll/geometry/setfile geometry/mollerMother.gdml
+/remoll/parallel/setfile geometry/mollerParallel.gdml
+
+/remoll/physlist/parallel/enable 
+
+# This must be explicitly called
+/run/initialize
+
+/remoll/printgeometry true
+
+/control/execute macros/load_magnetic_fieldmaps.mac
+
+# Raster and initial angle stuff
+/remoll/oldras true
+/remoll/rasx 5 mm
+/remoll/rasy 5 mm
+
+/remoll/evgen/set moller
+#/remoll/evgen/set elastic 
+#/remoll/evgen/set inelastic 
+#/remoll/evgen/set pion
+#/remoll/piontype pi+
+#/remoll/evgen/set pion_LUND
+#/remoll/evgen/set inelasticAl
+#/remoll/evgen/set quasielasticAl
+#/remoll/evgen/set elasticAl
+#/remoll/evgen/set external
+
+/remoll/beamene 11 GeV
+/remoll/beamcurr 65 microampere
+
+/remoll/SD/disable_all
+/remoll/SD/enable 29 #DS pion det
+/remoll/SD/enable 331 #showermax US surface
+/remoll/SD/enable 332 #showermax DS surface
+/remoll/SD/enable 8000 #pion det
+/remoll/SD/enable 8001 #pion det
+/remoll/SD/enable 70012 #this and following detectors are showermax PMTs
+/remoll/SD/enable 70112
+/remoll/SD/enable 70212
+/remoll/SD/enable 70312
+/remoll/SD/enable 70412
+/remoll/SD/enable 70512
+/remoll/SD/enable 70612
+/remoll/SD/enable 70712
+/remoll/SD/enable 70812
+/remoll/SD/enable 70912
+/remoll/SD/enable 71012
+/remoll/SD/enable 71112
+/remoll/SD/enable 71212
+/remoll/SD/enable 71312
+/remoll/SD/enable 71412
+/remoll/SD/enable 71512
+/remoll/SD/enable 71612
+/remoll/SD/enable 71712
+/remoll/SD/enable 71812
+/remoll/SD/enable 71912
+/remoll/SD/enable 72012
+/remoll/SD/enable 72112
+/remoll/SD/enable 72212
+/remoll/SD/enable 72312
+/remoll/SD/enable 72412
+/remoll/SD/enable 72512
+/remoll/SD/enable 72612
+/remoll/SD/enable 72712
+/remoll/SD/enable_range 7000 7300 #showermax sectors
+
+/process/list
+
+/run/beamOn 1000

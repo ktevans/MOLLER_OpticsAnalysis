@@ -1,0 +1,270 @@
+/remoll/geometry/setfile geometry/mollerMother.gdml
+/remoll/parallel/setfile geometry/mollerParallel.gdml
+
+/remoll/physlist/parallel/enable 
+
+# Enable optical physics
+/remoll/physlist/optical/enable
+
+# This must be explicitly called
+/run/initialize
+
+/remoll/printgeometry true
+
+/control/execute macros/load_magnetic_fieldmaps.mac
+
+# Raster and initial angle stuff
+/remoll/oldras true
+/remoll/rasx 5 mm
+/remoll/rasy 5 mm
+
+/remoll/evgen/set moller
+#/remoll/evgen/set elastic 
+#/remoll/evgen/set inelastic 
+#/remoll/evgen/set pion
+#/remoll/piontype pi+
+#/remoll/evgen/set pion_LUND
+#/remoll/evgen/set inelasticAl
+#/remoll/evgen/set quasielasticAl
+#/remoll/evgen/set elasticAl
+#/remoll/evgen/set external
+
+/remoll/beamene 11 GeV
+/remoll/beamcurr 65 microampere
+
+/remoll/SD/disable_all
+/remoll/SD/enable 29 #DS pion det
+/remoll/SD/enable 331 #showermax US surface
+/remoll/SD/enable 332 #showermax DS surface
+/remoll/SD/enable 8000 #pion det
+/remoll/SD/enable 8001 #pion det
+/remoll/SD/enable 70012 #this and following detectors are showermax PMTs
+/remoll/SD/enable 70112
+/remoll/SD/enable 70212
+/remoll/SD/enable 70312
+/remoll/SD/enable 70412
+/remoll/SD/enable 70512
+/remoll/SD/enable 70612
+/remoll/SD/enable 70712
+/remoll/SD/enable 70812
+/remoll/SD/enable 70912
+/remoll/SD/enable 71012
+/remoll/SD/enable 71112
+/remoll/SD/enable 71212
+/remoll/SD/enable 71312
+/remoll/SD/enable 71412
+/remoll/SD/enable 71512
+/remoll/SD/enable 71612
+/remoll/SD/enable 71712
+/remoll/SD/enable 71812
+/remoll/SD/enable 71912
+/remoll/SD/enable 72012
+/remoll/SD/enable 72112
+/remoll/SD/enable 72212
+/remoll/SD/enable 72312
+/remoll/SD/enable 72412
+/remoll/SD/enable 72512
+/remoll/SD/enable 72612
+/remoll/SD/enable 72712
+/remoll/SD/enable_range 7000 7300 #showermax sectors
+
+/remoll/SD/detect opticalphoton 70012
+/remoll/SD/detect opticalphoton 70112
+/remoll/SD/detect opticalphoton 70212
+/remoll/SD/detect opticalphoton 70312
+/remoll/SD/detect opticalphoton 70412
+/remoll/SD/detect opticalphoton 70512
+/remoll/SD/detect opticalphoton 70612
+/remoll/SD/detect opticalphoton 70712
+/remoll/SD/detect opticalphoton 70812
+/remoll/SD/detect opticalphoton 70912
+/remoll/SD/detect opticalphoton 71012
+/remoll/SD/detect opticalphoton 71112
+/remoll/SD/detect opticalphoton 71212
+/remoll/SD/detect opticalphoton 71312
+/remoll/SD/detect opticalphoton 71412
+/remoll/SD/detect opticalphoton 71512
+/remoll/SD/detect opticalphoton 71612
+/remoll/SD/detect opticalphoton 71712
+/remoll/SD/detect opticalphoton 71812
+/remoll/SD/detect opticalphoton 71912
+/remoll/SD/detect opticalphoton 72012
+/remoll/SD/detect opticalphoton 72112
+/remoll/SD/detect opticalphoton 72212
+/remoll/SD/detect opticalphoton 72312
+/remoll/SD/detect opticalphoton 72412
+/remoll/SD/detect opticalphoton 72512
+/remoll/SD/detect opticalphoton 72612
+/remoll/SD/detect opticalphoton 72712
+
+/remoll/SD/detect boundaryhits 7001
+/remoll/SD/detect boundaryhits 7002
+/remoll/SD/detect boundaryhits 7004
+/remoll/SD/detect boundaryhits 7006
+/remoll/SD/detect boundaryhits 7008
+
+/remoll/SD/detect boundaryhits 7011
+/remoll/SD/detect boundaryhits 7012
+/remoll/SD/detect boundaryhits 7014
+/remoll/SD/detect boundaryhits 7016
+/remoll/SD/detect boundaryhits 7018
+
+/remoll/SD/detect boundaryhits 7021
+/remoll/SD/detect boundaryhits 7022
+/remoll/SD/detect boundaryhits 7024
+/remoll/SD/detect boundaryhits 7026
+/remoll/SD/detect boundaryhits 7028
+
+/remoll/SD/detect boundaryhits 7031
+/remoll/SD/detect boundaryhits 7032
+/remoll/SD/detect boundaryhits 7034
+/remoll/SD/detect boundaryhits 7036
+/remoll/SD/detect boundaryhits 7038
+
+/remoll/SD/detect boundaryhits 7041
+/remoll/SD/detect boundaryhits 7042
+/remoll/SD/detect boundaryhits 7044
+/remoll/SD/detect boundaryhits 7046
+/remoll/SD/detect boundaryhits 7048
+
+/remoll/SD/detect boundaryhits 7051
+/remoll/SD/detect boundaryhits 7052
+/remoll/SD/detect boundaryhits 7054
+/remoll/SD/detect boundaryhits 7056
+/remoll/SD/detect boundaryhits 7058
+
+/remoll/SD/detect boundaryhits 7061
+/remoll/SD/detect boundaryhits 7062
+/remoll/SD/detect boundaryhits 7064
+/remoll/SD/detect boundaryhits 7066
+/remoll/SD/detect boundaryhits 7068
+
+/remoll/SD/detect boundaryhits 7071
+/remoll/SD/detect boundaryhits 7072
+/remoll/SD/detect boundaryhits 7074
+/remoll/SD/detect boundaryhits 7076
+/remoll/SD/detect boundaryhits 7078
+
+/remoll/SD/detect boundaryhits 7081
+/remoll/SD/detect boundaryhits 7082
+/remoll/SD/detect boundaryhits 7084
+/remoll/SD/detect boundaryhits 7086
+/remoll/SD/detect boundaryhits 7088
+
+/remoll/SD/detect boundaryhits 7091
+/remoll/SD/detect boundaryhits 7092
+/remoll/SD/detect boundaryhits 7094
+/remoll/SD/detect boundaryhits 7096
+/remoll/SD/detect boundaryhits 7098
+
+/remoll/SD/detect boundaryhits 7101
+/remoll/SD/detect boundaryhits 7102
+/remoll/SD/detect boundaryhits 7104
+/remoll/SD/detect boundaryhits 7106
+/remoll/SD/detect boundaryhits 7108
+
+/remoll/SD/detect boundaryhits 7111
+/remoll/SD/detect boundaryhits 7112
+/remoll/SD/detect boundaryhits 7114
+/remoll/SD/detect boundaryhits 7116
+/remoll/SD/detect boundaryhits 7118
+
+/remoll/SD/detect boundaryhits 7121
+/remoll/SD/detect boundaryhits 7122
+/remoll/SD/detect boundaryhits 7124
+/remoll/SD/detect boundaryhits 7126
+/remoll/SD/detect boundaryhits 7128
+
+/remoll/SD/detect boundaryhits 7131
+/remoll/SD/detect boundaryhits 7132
+/remoll/SD/detect boundaryhits 7134
+/remoll/SD/detect boundaryhits 7136
+/remoll/SD/detect boundaryhits 7138
+
+/remoll/SD/detect boundaryhits 7141
+/remoll/SD/detect boundaryhits 7142
+/remoll/SD/detect boundaryhits 7144
+/remoll/SD/detect boundaryhits 7146
+/remoll/SD/detect boundaryhits 7148
+
+/remoll/SD/detect boundaryhits 7151
+/remoll/SD/detect boundaryhits 7152
+/remoll/SD/detect boundaryhits 7154
+/remoll/SD/detect boundaryhits 7156
+/remoll/SD/detect boundaryhits 7158
+
+/remoll/SD/detect boundaryhits 7161
+/remoll/SD/detect boundaryhits 7162
+/remoll/SD/detect boundaryhits 7164
+/remoll/SD/detect boundaryhits 7166
+/remoll/SD/detect boundaryhits 7168
+
+/remoll/SD/detect boundaryhits 7171
+/remoll/SD/detect boundaryhits 7172
+/remoll/SD/detect boundaryhits 7174
+/remoll/SD/detect boundaryhits 7176
+/remoll/SD/detect boundaryhits 7178
+
+/remoll/SD/detect boundaryhits 7181
+/remoll/SD/detect boundaryhits 7182
+/remoll/SD/detect boundaryhits 7184
+/remoll/SD/detect boundaryhits 7186
+/remoll/SD/detect boundaryhits 7188
+
+/remoll/SD/detect boundaryhits 7191
+/remoll/SD/detect boundaryhits 7192
+/remoll/SD/detect boundaryhits 7194
+/remoll/SD/detect boundaryhits 7196
+/remoll/SD/detect boundaryhits 7198
+
+/remoll/SD/detect boundaryhits 7201
+/remoll/SD/detect boundaryhits 7202
+/remoll/SD/detect boundaryhits 7204
+/remoll/SD/detect boundaryhits 7206
+/remoll/SD/detect boundaryhits 7208
+
+/remoll/SD/detect boundaryhits 7211
+/remoll/SD/detect boundaryhits 7212
+/remoll/SD/detect boundaryhits 7214
+/remoll/SD/detect boundaryhits 7216
+/remoll/SD/detect boundaryhits 7218
+
+/remoll/SD/detect boundaryhits 7221
+/remoll/SD/detect boundaryhits 7222
+/remoll/SD/detect boundaryhits 7224
+/remoll/SD/detect boundaryhits 7226
+/remoll/SD/detect boundaryhits 7228
+
+/remoll/SD/detect boundaryhits 7231
+/remoll/SD/detect boundaryhits 7232
+/remoll/SD/detect boundaryhits 7234
+/remoll/SD/detect boundaryhits 7236
+/remoll/SD/detect boundaryhits 7238
+
+/remoll/SD/detect boundaryhits 7241
+/remoll/SD/detect boundaryhits 7242
+/remoll/SD/detect boundaryhits 7244
+/remoll/SD/detect boundaryhits 7246
+/remoll/SD/detect boundaryhits 7248
+
+/remoll/SD/detect boundaryhits 7251
+/remoll/SD/detect boundaryhits 7252
+/remoll/SD/detect boundaryhits 7254
+/remoll/SD/detect boundaryhits 7256
+/remoll/SD/detect boundaryhits 7258
+
+/remoll/SD/detect boundaryhits 7261
+/remoll/SD/detect boundaryhits 7262
+/remoll/SD/detect boundaryhits 7264
+/remoll/SD/detect boundaryhits 7266
+/remoll/SD/detect boundaryhits 7268
+
+/remoll/SD/detect boundaryhits 7271
+/remoll/SD/detect boundaryhits 7272
+/remoll/SD/detect boundaryhits 7274
+/remoll/SD/detect boundaryhits 7276
+/remoll/SD/detect boundaryhits 7278
+
+/process/list
+
+/run/beamOn 100

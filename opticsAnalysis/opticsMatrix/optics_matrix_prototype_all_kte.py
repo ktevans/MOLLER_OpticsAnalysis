@@ -3,6 +3,7 @@ import uproot
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+#import csv
 from polygon_selector_demo import SelectFromCollection
 from scipy.stats import gaussian_kde
 from sklearn.model_selection import train_test_split
@@ -13,6 +14,8 @@ from sklearn import linear_model
 class OPTICS:
 
     def __init__(self):
+        #creates DataFrame variables to use in class
+        #DataFrame() creates a 2d array of numbers corresponding to sectors of the sieve
         self.orig = pd.DataFrame()        # data before cut
         self.sec1 = pd.DataFrame()        # sector1 data before cut
         self.sec2 = pd.DataFrame()        # sector2 data before cut
@@ -25,32 +28,35 @@ class OPTICS:
         self.selected = pd.DataFrame()    # data of selected holes
 
     def GenNumpyArray(self,filename):
-        #df = ROOT.RDataFrame("newT", "/SlimRootfiles/rootfiles/"+filename) 
-        #npy_arr = df.AsNumpy(columns=["main_x","main_y"])     
-        #npy_arr = df.AsNumpy()     
+        #defines a function to create a dictionary from a root file
+
+        #df = ROOT.RDataFrame("newT", "/SlimRootfiles/rootfiles/"+filename)
+        #npy_arr = df.AsNumpy(columns=["main_x","main_y"])
+        #npy_arr = df.AsNumpy()
 
         file = uproot.open("SlimRootfiles/rootfiles/"+filename)
         T=file["newT"]
 
         geo = T.arrays(["gem1_x", "gem1_y","gem1_r","gem1_ph","gem1_px","gem1_py","gem1_pz","tg_th","tg_ph","tg_vz","tg_p","rate"],library="pd")  # panda dictionary
-        geo = geo.loc[geo["gem1_r"]>300]
+        geo = geo.loc[geo["gem1_r"]>300] #radial cut (applies to other variables)
 
-        self.orig=geo
+        self.orig=geo #data before cut
 
     def DefineSectors(self):
         rot_angle=0        # put the GEM rotation angle here
 
-        angle_lo=[]
-        angle_up=[]
+        #initializes lists to fill with angles
+        angle_lo=[] #edge 1 of sector cuts
+        angle_up=[] #other edge of sector cuts
 
-        for i in range(7):
+        for i in range(7): #range(x) = number of sector cuts
             angle_lo.append(math.pi/14 + i*2*math.pi/7+rot_angle)
             angle_up.append(3*math.pi/14 + i*2*math.pi/7+rot_angle)
             if angle_lo[i]>math.pi:
                angle_lo[i]=angle_lo[i]-2*math.pi;
             if angle_up[i]>math.pi:
                angle_up[i]=angle_up[i]-2*math.pi;
-            
+
         geo=self.orig
 
         self.sec1=geo.loc[(geo["gem1_ph"]<=angle_up[0]) & (geo["gem1_ph"]>=angle_lo[0])]
@@ -63,6 +69,7 @@ class OPTICS:
 
     def DrawHistAllSectors(self):
         fig, axs = plt.subplots(2, 4, figsize=(20,10))
+        #Draws a histogram of all self.sec sectors
 
         #fig,ax = plt.subplots(figsize =(10, 7))
         #plt.hist2d(npy_arr["main_x"], npy_arr["main_y"])
@@ -71,7 +78,8 @@ class OPTICS:
         axs[0,0].hist2d(self.orig.gem1_x, self.orig.gem1_y,(200,200),cmap=plt.cm.jet, cmin=1)
         #axs[0,0].set_xlim((-1000,1000))
         #axs[0,0].set_ylim((-1000,1000))
-		
+
+        #cmap=plt is a color map
         axs[0,1].hist2d(self.sec1.gem1_x,self.sec1.gem1_y,(100,100),cmap=plt.cm.jet, cmin=1)
         axs[0,1].set_title('sec1')
         axs[0,2].hist2d(self.sec2.gem1_x,self.sec2.gem1_y,(100,100),cmap=plt.cm.jet, cmin=1)
@@ -87,7 +95,7 @@ class OPTICS:
         axs[1,3].hist2d(self.sec7.gem1_x,self.sec7.gem1_y,(100,100),cmap=plt.cm.jet, cmin=1)
         axs[1,3].set_title('sec7')
 
-        plt.show()
+        plt.show() #prints the plot
 
 
     def DrawScatterPlot(self,x,y):   # x, y are pandas dataframe
@@ -98,6 +106,7 @@ class OPTICS:
         # Sort the points by density, so that the densest points are plotted last
         idx = density.argsort()
         #print(type(x))
+        #iloc is integer position based variable
         newx, newy, z = x.iloc[idx], y.iloc[idx], density[idx]
 
         fig, ax = plt.subplots()
@@ -144,7 +153,7 @@ class OPTICS:
         header=["tg_th","tg_ph","tg_vz","tg_p","gem1_r","gem1_rp","gem1_ph","gem1_php"]
         df.to_csv(filename,columns=header)
 
-    def PolynomialRegression(self, X, y, degree):  # X is the GEM variables in numpy array, y is the target variable 
+    def PolynomialRegression(self, X, y, degree):  # X is the GEM variables in numpy array, y is the target variable
 
         X_train,X_test,y_train,y_test=train_test_split(X, y, test_size=0.33, random_state=42) # split the data into traning set and test set
 
@@ -158,7 +167,7 @@ class OPTICS:
 
         model = regression.fit(X_train_new, y_train)
         y_pred = regression.predict(X_test_new)
- 
+
         params = model.coef_
         intercept = model.intercept_
 
@@ -177,11 +186,24 @@ class OPTICS:
         ax.scatter(X_test[:,[0]], y_pred, cmap='Reds')
         plt.show()
 
+        list_y_test = np.concatenate(y_test)
+        list_y_pred = np.concatenate(y_pred)
+        #print(list_y_test)
+        #print(list_y_pred)
+
+#        with open('Regression.csv','w') as f:
+#            writer = csv.writer(f)
+#            writer.writerow(['y_test','y_pred'])
+
+        reg = {'y_test': list_y_test, 'y_pred': list_y_pred}
+        dataframe = pd.DataFrame(reg)
+        dataframe.to_csv('Regression.csv')
+
 
         #self.TestFit(X_test,y_test,params[0],intercept)
 
-        score = model.score(X_test_new, y_test)
-        print("score:  ", score)
+        #score = model.score(X_test_new, y_test)
+        #print("score:  ", score)
 
     def TestFit(self, X, y, params, intercept):
 
@@ -211,13 +233,12 @@ class OPTICS:
         plt.show()
 
 
-
 if __name__=='__main__':
 
     optics=OPTICS()
 
-    #optics.GenNumpyArray("C12_elastic_optics2_usc_pass3_slim.root")
-    optics.GenNumpyArray("5pass_Optics2US_sieve_250k_4_slim.root")
+
+    optics.GenNumpyArray("C12_elastic_optics2_usc_pass3_slim.root")
     #optics.DefineSectors()
     #optics.DrawHistAllSectors()     # Draw the 2D histogram of the GEM 1 y vs. x
     #optics.DrawScatterPlot(optics.sec1.gem1_x, optics.sec1.gem1_y)   # Draw the scatter plot of a sector with density as the color
@@ -227,9 +248,9 @@ if __name__=='__main__':
     #hole_id="13"
     #filename="output/SieveHole_"+hole_id+".csv"
     #optics.GenCSV(hole_id, filename)
-    
 
-    all_file=["11","12","21","22","31","32","41","42","51","52","61","62","71","72","73"]
+
+    all_file=["11","12","13","14","21","22","31","32","41","42","51","52","61","62","71","72"]
     all_df = pd.DataFrame()
     for a_file in all_file:
         file_new = "output/SieveHole_"+a_file+".csv"
@@ -237,36 +258,35 @@ if __name__=='__main__':
         all_df = pd.concat([all_df,df_new],axis=0)
 
     #optics.DrawScatterPlot(df.gem1_rp,df.tg_th)
+
     #write single hole like line below
     df_np=all_df.to_numpy()
+
     #leave these commented out
     #X=df.iloc[:,5:7]    # (gem_r, gem_r')
     #y=df.iloc[:,1:2]    # tg_th
-    
+
     #uncomment for all fitting
-    X=df_np[:,5:7]
-    y=df_np[:,1:2]
-    optics.PolynomialRegression(X, y, 2)  
+    X=df_np[:,5:7] #Does this refer to a variable in the numpy array? gem_r and/or gem_r'?
+    y=df_np[:,1:2] #tg_th?
+    optics.PolynomialRegression(X, y, 2)
 
-#    x1_min=X.iloc[:,[0]].min()[0]
-#    x1_max=X.iloc[:,[0]].max()[0]
+    #x1_min=X.iloc[:,[0]].min()[0]
+    #x1_max=X.iloc[:,[0]].max()[0]
 
-#    x2_min=X.iloc[:,[1]].min()[0]
-#    x2_max=X.iloc[:,[1]].max()[0]
+    #x2_min=X.iloc[:,[1]].min()[0]
+    #x2_max=X.iloc[:,[1]].max()[0]
 
-#    print(x1_min, x1_max)
-#    print(x2_min, x2_max)
-#    print(params[0])
+    #print(x1_min, x1_max)
+    #print(x2_min, x2_max)
+    #print(params[0])
 
-#    r=np.linspace(x1_min,x1_max)
-#    rp=np.linspace(x2_min,x2_max)
+    #r=np.linspace(x1_min,x1_max)
+    #rp=np.linspace(x2_min,x2_max)
 
-    
-    
+
+
     #ax = plt.axes(projection='3d')
     #ax.scatter3D(df.gem1_r, df.gem1_rp, df.tg_th, c=df.tg_th, cmap='Greens')
     #plt.show()
-    
-
-
 

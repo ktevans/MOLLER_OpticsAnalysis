@@ -213,19 +213,19 @@ if __name__=='__main__':
 
     optics=OPTICS()
 
-    optics.GenNumpyArray("C12_elastic_optics2_usc_pass3_slim.root")
+    optics.GenNumpyArray("5pass_Optics2US_sieve_250k_4_slim.root")
     optics.DefineSectors()
     #optics.DrawHistAllSectors()     # Draw the 2D histogram of the GEM 1 y vs. x
     #optics.DrawScatterPlot(optics.sec1.gem1_x, optics.sec1.gem1_y)   # Draw the scatter plot of a sector with density as the color
-    optics.SelectOneHole(optics.sec1)
+    optics.SelectOneHole(optics.sec7)
 
     #hole_id=input("Hole ID: ") # give segmenration fault, apparaently different systems have a different way of taking keyboard input in python
-    hole_id="14"
+    hole_id="73"
     filename="output/SieveHole_"+hole_id+".csv"
     optics.GenCSV(hole_id, filename)
     
 
-    #all_file=["11","12","13","14","21","22","31","32","41","42","51","52","61","62","71","72"]
+    #all_file=["11","12","13","14","21","22","31","32","41","42","51","52","61","62","71","72", "73"]
     #all_df = pd.DataFrame()
     #for a_file in all_file:
     #    file_new = "output/SieveHole_"+a_file+".csv"

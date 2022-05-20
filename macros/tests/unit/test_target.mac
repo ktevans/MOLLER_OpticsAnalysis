@@ -1,5 +1,0 @@
-/run/initialize
-/remoll/targname USAlTarg
-/remoll/target/print
-/run/beamOn 1
-

@@ -1,5 +1,0 @@
-/run/initialize
-
-/remoll/filename remollout.root
-
-/run/beamOn 100

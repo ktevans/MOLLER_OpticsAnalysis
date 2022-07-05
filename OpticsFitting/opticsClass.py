@@ -5,10 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from polygon_selector_demo import SelectFromCollection
-from scipy.stats import gaussian_kde
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-from sklearn import linear_model
 import pickle
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -130,16 +126,22 @@ class OPTICS:
         print("Fitting ",model)
         print("\twith name ",modNm," on data shape",X_train.shape)
 
-        params = model.coef_
-        intercept = model.intercept_
-        print("Fit result:")
-        print("\t",intercept,params)
-        print("\t Training score:",model.score(X_train,y_train))
+        try:
+            params = model.coef_
+            intercept = model.intercept_
+            print("Fit result:")
+            print("\t",intercept,params)
+        except:
+            print("No parameters to print out")
+
+        trainScore = model.score(X_train,y_train)
+        print("\t Training score:",trainScore)
 
         pkl_fNm = "./"+modNm+".pkl"
         with open(pkl_fNm,'wb') as file:
             pickle.dump(model,file)
         print("\t","saved to file:",pkl_fNm)
+        return trainScore
 
         
     def loadModel(self, modNm):  
@@ -147,50 +149,61 @@ class OPTICS:
         print("Loaded model",model)
         return model
 
-    def evalModel(self, X_test, X_plot, y_test, model,varTitle):  
-
-        plt.rcParams["figure.figsize"] = [12.00, 7.00]
-
+    def evalModel(self, X_test, X_plot, y_test, model,trainScore,plot,varTitle,yTitle):  
         score = model.score(X_test, y_test)
         y_pred = model.predict(X_test)
 
+        self.plotOneVar(X_plot,y_test.ravel(),y_pred.ravel(), score, trainScore, varTitle, yTitle, plot)
+    
+    def plotOneVar(self, X_plot, y_test, y_pred, testScore, trainScore, varTitle, yTitle, plot):
+
         varNms=["GEM r [mm]","GEM rp","GEM phi [rad]", "GEM php"]
+
+        plt.rcParams["figure.figsize"] = [14.00, 9.00]
 
         fig1, ax1 = plt.subplots(2,2)
         fig1.canvas.manager.set_window_title(varTitle+"_compare")
-        ax1[0,0].set_title("Overall test-score: {0:.2f}".format(score))
+        ax1[0,0].set_title("Overall test-score: {0:.2f}".format(testScore)+
+                           "| train-score: {0:.2f}".format(trainScore))
+        ax1[0,1].set_title(varTitle)
+
         for i in range(2):
             for j in range(2):
-                ax1[i,j].scatter( X_plot[:,[i*2+j]], y_test[:,[0]], cmap='Greens') 
-                ax1[i,j].scatter( X_plot[:,[i*2+j]], y_pred[:,[0]], cmap='Reds')
+                ax1[i,j].scatter( X_plot[:,[i*2+j]], y_test, cmap='Greens') 
+                ax1[i,j].scatter( X_plot[:,[i*2+j]], y_pred, cmap='Reds')
                 ax1[i,j].set_xlabel(varNms[i*2+j])
-                ax1[i,j].set_ylabel(varTitle)
+                ax1[i,j].set_ylabel(yTitle)
                 ax1[i,j].grid(visible=True, axis='both')
         
         fig2, ax2 = plt.subplots()
-        fig2.canvas.manager.set_window_title(varTitle+"_residual")
-        yRes = y_test[:,[0]]-y_pred[:,[0]]
+        fig2.canvas.manager.set_window_title(yTitle+"_residual")
+        yRes = y_test-y_pred
         mean = np.mean(yRes)
         std = np.std(yRes)
-        ax2.hist(yRes,bins=50,histtype='step')
+        ax2.hist(yRes,bins=200,histtype='step')
         ax2.set_title("Mean: {0:.2e}".format(mean)+" std: {0:.2e}".format(std))
         ax2.grid(visible=True, axis='both')
+        ax2.set_yscale("log")
 
         fig3, ax3 = plt.subplots(2,2)
-        fig3.canvas.manager.set_window_title(varTitle+"_residualVar")
+        fig3.canvas.manager.set_window_title(yTitle+"_residualVar")
         for i in range(2):
             for j in range(2):
                 ax3[i,j].scatter( X_plot[:,[i*2+j]], yRes, cmap='Blues') 
                 ax3[i,j].set_xlabel(varNms[i*2+j])
-                ax3[i,j].set_ylabel(varTitle+" residual (y-ytrue)")
+                ax3[i,j].set_ylabel(yTitle+" residual (y-ytrue)")
                 ax3[i,j].grid(visible=True, axis='both')
         
         ##save figures
         pp = PdfPages(varTitle+".pdf")
         fig_nums = plt.get_fignums()
-        figs = [plt.figure(n) for n in fig_nums]
-        for fig in figs:
-            fig.savefig(pp, format='pdf')
+        fig_nums= fig_nums[-3:len(fig_nums)]
+        for i in fig_nums[::-1]:
+                plt.figure(i)
+                plt.savefig(pp, format='pdf')
         pp.close()
 
-        plt.show()
+        if plot:
+            plt.show()
+        else:
+            plt.close("all")
